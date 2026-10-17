@@ -47,8 +47,11 @@ public class Triangle {
                       .toArray();
 
       int longestSide = Arrays.stream(numbers).max().getAsInt();
-      int sumTheRest = Arrays.stream(numbers).filter(n -> n != longestSide).sum();
+      int sumTheRest = Arrays.stream(numbers).sum() - longestSide;
       // In testing the 'equals' in this statement accidentally catches EQUILATERAL triangles, sum should be zero as all sides are equal and filtered out
+
+      // Bug after submission: If the longest side appears more than once, it will be filtered out multiple times, leading to Isosceles being incorrectly flagged [2, 3, 3]
+      // Fix: remove filter(longestSide) and sum everything, then remove 1 instance of `longestSide`.
       if (sumTheRest > 0 && sumTheRest <= longestSide) {
         //It is not a valid triangle
         throw new IllegalArgumentException("the 2 of the 3 sides MUST sum to be greater than the longest side; Therefore not a valid triangle.");
